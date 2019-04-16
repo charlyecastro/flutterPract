@@ -16,6 +16,11 @@ class RealWordState extends State<RealWorldApp> {
   var _isLoading = false;
   var videos;
 
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
   _fetchData() async {
     print("FETCHING DATA!");
 
@@ -63,10 +68,40 @@ class RealWordState extends State<RealWorldApp> {
                     itemCount: this.videos != null ? this.videos.length : 0,
                     itemBuilder: (context, i) {
                       final video = this.videos[i];
-                      return new VideoCell(video);
+                      return new FlatButton(
+                        padding: new EdgeInsets.all(0.0),
+                        child: new VideoCell(video),
+                        onPressed: () {
+                          print("video Cell tapped $i");
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => new DetailPage(i)));
+                        },
+                      );
                     },
                   ),
           )),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+
+  final vidNumber;
+
+  DetailPage(this.vidNumber);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Detail Page"),
+      ),
+      body: new Center(
+        child: new Text("You clicked on Video #$vidNumber"),
+      ),
     );
   }
 }
